@@ -3,7 +3,7 @@
 /cmake-build-*/
 
 # CMake output configured at the project root
-
+/build_dictionary
 
 # Runtime generated files
 /data/generated/
