@@ -12,3 +12,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #
 # add_executable(build_dictionary src/app/build_dictionary.cpp)
 # add_executable(build_webpage_index src/app/build_webpage_index.cpp)
+
+add_library(search_core STATIC src/core/EnvLoader.cpp)
+target_include_directories(search_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
