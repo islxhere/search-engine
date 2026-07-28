@@ -1,0 +1,40 @@
+﻿# CMake build directories
+/build/
+/cmake-build-*/
+
+# CMake output configured at the project root
+
+
+# Runtime generated files
+/data/generated/
+
+#temp ignore
+/data/
+
+# Local secrets and environment configuration
+/.env
+/.env.*
+!/.env.example
+
+# Local agent metadata
+/.agents/
+/.codex/
+/.claude/
+
+# CLion / IntelliJ local settings
+/.idea/
+
+# CMake files generated when configured in the source directory
+/CMakeCache.txt
+/CMakeFiles/
+/cmake_install.cmake
+/Makefile
+/CTestTestfile.cmake
+/compile_commands.json
+
+# Editor and operating-system temporary files
+*.log
+*.swp
+*.swo
+*~
+.DS_Store
