@@ -1,16 +1,28 @@
 #include "core/KeywordProcessor.h"
 #include "core/DirectoryScanner.h"
+#include "core/EnvLoader.h"
 
 #include <utfcpp/utf8.h>
 
-KeywordProcessor::KeywordProcessor() = default;
+KeywordProcessor::KeywordProcessor() {
+    const auto stopwords = EnvLoader::se_stopwords_dir();
+    const std::string ch_dir = stopwords + "/cn_stopwords.txt";
+    const std::string en_dir = stopwords + "/en_stopwords.txt";
 
-void KeywordProcessor::process(const std::string &chDir, const std::string &enDir) {
-    std::ifstream chFile{chDir};
-    std::ifstream enFile{enDir};
+    std::ifstream chFile{ch_dir};
+    std::ifstream enFile{en_dir};
+
     std::string stopword;
+
     while (chFile >> stopword) chStopWords_.insert(stopword);
     while (enFile >> stopword) enStopWords_.insert(stopword);
+}
+
+void KeywordProcessor::process(const std::string &raw, const std::string &output) {
+    build_cn_dict(raw + "/CN", output + "/dict_cn.dat");
+    build_cn_index(output + "/dict_cn.dat", output + "/index_cn.dat");
+    build_en_dict(raw + "/EN", output + "/dict_en.dat");
+    build_en_index(output + "/dict_en.dat", output + "/index_en.dat");
 }
 
 static bool is_chinese(const char32_t cp) { return cp >= 0x4E00 && cp <= 0x9FFF; }
@@ -24,7 +36,7 @@ static bool is_all_chinese(std::string &word) {
     return true;
 }
 
-void KeywordProcessor::create_cn_dict(const std::string &dir, const std::string &outfile) {
+void KeywordProcessor::build_cn_dict(const std::string &dir, const std::string &outfile) {
     auto files = DirectoryScanner::scan(dir);
     std::map<std::string, int> wordCount;
 
@@ -48,9 +60,10 @@ void KeywordProcessor::create_cn_dict(const std::string &dir, const std::string 
     std::sort(vec.begin(), vec.end(), [](const Pair &a, const Pair &b) -> bool { return a.second > b.second; });
     for (auto &[word, count]: vec)
         ofs << word << " " << count << std::endl;
+    std::cout << "[√] 中文词典库生成" << std::endl;
 }
 
-void KeywordProcessor::create_cn_index(const std::string &dict, const std::string &index) {
+void KeywordProcessor::build_cn_index(const std::string &dict, const std::string &index) {
     std::ifstream ifs{dict};
     std::string line;
     std::map<std::string, std::set<int> > charIndex;
@@ -80,9 +93,10 @@ void KeywordProcessor::create_cn_index(const std::string &dict, const std::strin
         for (int n: indexes) ofs << " " << n;
         ofs << std::endl;
     }
+    std::cout << "[√] 中文索引库生成" << std::endl;
 }
 
-void KeywordProcessor::create_en_dict(const std::string &dir, const std::string &outfile) {
+void KeywordProcessor::build_en_dict(const std::string &dir, const std::string &outfile) {
     auto files = DirectoryScanner::scan(dir);
     std::map<std::string, int> wordCount;
 
@@ -109,9 +123,11 @@ void KeywordProcessor::create_en_dict(const std::string &dir, const std::string 
     std::sort(vec.begin(), vec.end(), [](const Pair &a, const Pair &b) -> bool { return a.second > b.second; });
     for (auto &[word, count]: vec)
         ofs << word << " " << count << std::endl;
+
+    std::cout << "[√] 英文词典库生成" << std::endl;
 }
 
-void KeywordProcessor::create_en_index(const std::string &dict, const std::string &index) {
+void KeywordProcessor::build_en_index(const std::string &dict, const std::string &index) {
     std::ifstream ifs{dict};
     std::string line;
     std::map<char, std::set<int> > charIndex;
@@ -121,8 +137,8 @@ void KeywordProcessor::create_en_index(const std::string &dict, const std::strin
         ++lineNo;
         std::istringstream iss{line};
         std::string word;
-        int freq;
-        iss >> word >> freq;
+        int _;
+        iss >> word >> _;
 
         for (auto &ch: word) charIndex[ch].insert(lineNo);
     }
@@ -133,4 +149,6 @@ void KeywordProcessor::create_en_index(const std::string &dict, const std::strin
         for (int n: indexes) ofs << " " << n;
         ofs << std::endl;
     }
+
+    std::cout << "[√] 英文索引库生成" << std::endl;
 }
