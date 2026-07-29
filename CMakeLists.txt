@@ -16,14 +16,15 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../)
 # add_executable(build_dictionary src/app/build_dictionary.cpp)
 # add_executable(build_webpage_index src/app/build_webpage_index.cpp)
 
-add_library(search_core STATIC src/core/EnvLoader.cpp)
-target_include_directories(search_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+add_library(env_loader STATIC src/core/EnvLoader.cpp)
+target_include_directories(env_loader PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 add_library(dir_scaner STATIC src/core/DirectoryScanner.cpp)
 target_include_directories(dir_scaner PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 add_library(keyword_proc STATIC src/core/KeywordProcessor.cpp)
 target_include_directories(keyword_proc PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(keyword_proc PRIVATE env_loader)
 
 add_executable(build_dictionary src/build_dictionary.cpp)
-target_link_libraries(build_dictionary PRIVATE search_core keyword_proc dir_scaner)
+target_link_libraries(build_dictionary PRIVATE env_loader keyword_proc dir_scaner)

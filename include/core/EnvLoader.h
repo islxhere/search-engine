@@ -10,7 +10,7 @@ public:
 
     ~EnvLoader() = delete;
 
-    static std::string se_data_dir();
+    static std::string se_data_dict_dir();
 
     static std::string se_corpus_dir();
 

@@ -18,7 +18,7 @@ std::string EnvLoader::required(const std::string_view name) {
     return *value;
 }
 
-std::string EnvLoader::se_data_dir() { return required("SE_DATA_DIR"); }
+std::string EnvLoader::se_data_dict_dir() { return required("SE_DATA_DIR1"); }
 
 std::string EnvLoader::se_corpus_dir() { return required("SE_CORPUS_DIR"); }
 
