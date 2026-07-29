@@ -5,10 +5,10 @@ root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 cd "$root"
 
 cmake -S . -B build
-cmake --build build --target build_dictionary
+cmake --build build --target build_offline_data
 
 set -a
 source .env
 set +a
 
-exec ./build_dictionary
+exec ./build_offline_data

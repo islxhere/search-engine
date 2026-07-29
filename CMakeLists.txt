@@ -13,7 +13,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../)
 # target_link_libraries(search_server PRIVATE muduo_net muduo_base pthread)
 
 #
-# add_executable(build_dictionary src/app/build_dictionary.cpp)
+# add_executable(build_offline_data src/app/build_offline_data.cpp)
 # add_executable(build_webpage_index src/app/build_webpage_index.cpp)
 
 add_library(env_loader STATIC src/core/EnvLoader.cpp)
