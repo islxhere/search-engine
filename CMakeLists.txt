@@ -24,7 +24,10 @@ target_include_directories(dir_scaner PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
 
 add_library(keyword_proc STATIC src/core/KeywordProcessor.cpp)
 target_include_directories(keyword_proc PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_link_libraries(keyword_proc PRIVATE env_loader)
+
+add_library(page_proc STATIC src/webpage/PageProcessor.cpp)
+target_link_libraries(page_proc PRIVATE tinyxml2)
+target_include_directories(page_proc PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 add_executable(build_dictionary src/build_dictionary.cpp)
-target_link_libraries(build_dictionary PRIVATE env_loader keyword_proc dir_scaner)
+target_link_libraries(build_dictionary PRIVATE env_loader keyword_proc dir_scaner page_proc)

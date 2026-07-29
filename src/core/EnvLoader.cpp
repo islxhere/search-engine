@@ -20,6 +20,10 @@ std::string EnvLoader::required(const std::string_view name) {
 
 std::string EnvLoader::se_data_dict_dir() { return required("SE_DATA_DIR1"); }
 
+std::string EnvLoader::se_data_webpage_dir() { return required("SE_DATA_DIR2"); }
+
 std::string EnvLoader::se_corpus_dir() { return required("SE_CORPUS_DIR"); }
 
 std::string EnvLoader::se_stopwords_dir() { return required("SE_STOPWORDS_DIR"); }
+
+std::string EnvLoader::se_raw_pages_dir() { return required("SE_RAW_PAGES_DIR"); }

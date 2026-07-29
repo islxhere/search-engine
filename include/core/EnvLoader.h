@@ -12,9 +12,13 @@ public:
 
     static std::string se_data_dict_dir();
 
+    static std::string se_data_webpage_dir();
+
     static std::string se_corpus_dir();
 
     static std::string se_stopwords_dir();
+
+    static std::string se_raw_pages_dir();
 
 private:
     static std::string required(std::string_view name);
