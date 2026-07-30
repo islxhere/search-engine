@@ -2,6 +2,8 @@
 #include "core/DirectoryScanner.h"
 #include "core/EnvLoader.h"
 
+#include <cmath>
+#include <fstream>
 #include <iostream>
 #include <tinyxml2.h>
 #include <regex>

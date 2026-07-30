@@ -1,5 +1,7 @@
 #pragma once
 #include <cppjieba/Jieba.hpp>
+#include <set>
+#include <string>
 
 class KeywordProcessor {
 public:

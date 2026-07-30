@@ -21,6 +21,13 @@
 /.codex/
 /.claude/
 
+# VS Code local settings
+/.vscode/
+
+# clangd local settings and cache
+/.clangd
+/.cache/
+
 # CLion / IntelliJ local settings
 /.idea/
 

@@ -1,4 +1,7 @@
 #pragma once
+#include <cppjieba/Jieba.hpp>
+#include <map>
+#include <set>
 #include <string>
 #include <vector>
 #include <simhash/Simhasher.hpp>
