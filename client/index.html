@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Buugle：简洁、专注的网页搜索客户端">
+    <meta name="color-scheme" content="light dark">
+    <link rel="icon" href="data:,">
+    <title>Buugle</title>
+    <script>
+      (() => {
+        let saved;
+        try {
+          saved = localStorage.getItem("buugle-theme");
+        } catch {}
+        if (saved !== "light" && saved !== "dark") saved = null;
+        const theme = saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme;
+      })();
+    </script>
+    <link rel="stylesheet" href="/styles.css">
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">跳到搜索结果</a>
+
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Buugle 首页">Buugle</a>
+
+      <form class="search-form" role="search" autocomplete="off">
+        <div class="search-box">
+          <label class="sr-only" for="search-input">搜索网页</label>
+          <input
+            id="search-input"
+            name="q"
+            type="search"
+            role="combobox"
+            placeholder="输入关键词"
+            enterkeyhint="search"
+            aria-autocomplete="list"
+            aria-controls="suggestions"
+            aria-expanded="false"
+          >
+          <button class="clear-button" type="button" aria-label="清空搜索内容" hidden>
+            <!-- Feather Icons (MIT): x -->
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M18 6 6 18M6 6l12 12"></path>
+            </svg>
+          </button>
+          <ul id="suggestions" class="suggestions" role="listbox" hidden></ul>
+        </div>
+        <button class="search-button" type="submit">搜索</button>
+      </form>
+
+      <button class="theme-button" type="button" aria-label="切换到深色模式">
+        <!-- Feather Icons (MIT): moon / sun -->
+        <svg class="moon-icon" aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"></path>
+        </svg>
+        <svg class="sun-icon" aria-hidden="true" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"></path>
+        </svg>
+      </button>
+    </header>
+
+    <main id="main-content" class="page">
+      <section class="welcome" aria-labelledby="welcome-title">
+        <p class="eyebrow">SEARCH THE OPEN WEB</p>
+        <h1 id="welcome-title">从一个词开始，找到值得阅读的页面。</h1>
+        <p>输入关键词，Buugle 会为你提供联想并检索相关网页。</p>
+      </section>
+
+      <section class="results-summary" aria-labelledby="results-heading" hidden>
+        <h1 id="results-heading">找到相关结果</h1>
+        <p id="results-meta"></p>
+      </section>
+
+      <p id="live-status" class="sr-only" role="status" aria-live="polite"></p>
+
+      <section class="state-panel loading-state" aria-live="polite" hidden>
+        <p>正在检索，请稍候……</p>
+      </section>
+
+      <section class="state-panel empty-state" hidden>
+        <p class="state-kicker">没有找到匹配结果</p>
+        <h2>换一个更简短的关键词试试。</h2>
+        <p>也可以从上方联想词中选择更接近的表达。</p>
+      </section>
+
+      <section class="state-panel error-state" role="alert" hidden>
+        <p class="state-kicker">暂时无法完成搜索</p>
+        <h2 id="error-message">客户端未能连接搜索服务。</h2>
+        <button id="retry-button" type="button">重新尝试</button>
+      </section>
+
+      <section class="results-layout" hidden>
+        <ol id="results" class="results-list"></ol>
+
+        <aside class="related" aria-labelledby="related-heading">
+          <h2 id="related-heading">相关检索</h2>
+          <ul id="related-list"></ul>
+        </aside>
+      </section>
+    </main>
+
+    <template id="suggestion-icon-template">
+      <!-- Feather Icons (MIT): search -->
+      <svg class="suggestion-icon" aria-hidden="true" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="m20 20-4-4"></path>
+      </svg>
+    </template>
+
+    <noscript>请启用 JavaScript 后使用 Buugle 搜索。</noscript>
+  </body>
+</html>
