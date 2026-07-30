@@ -1,4 +1,4 @@
-#include "core/KeywordProcessor.h"
+#include "recommend/KeywordProcessor.h"
 #include "core/DirectoryScanner.h"
 #include "core/EnvLoader.h"
 

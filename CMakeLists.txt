@@ -22,7 +22,7 @@ target_include_directories(env_loader PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
 add_library(dir_scaner STATIC src/core/DirectoryScanner.cpp)
 target_include_directories(dir_scaner PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-add_library(keyword_proc STATIC src/core/KeywordProcessor.cpp)
+add_library(keyword_proc STATIC src/recommend/KeywordProcessor.cpp)
 target_include_directories(keyword_proc PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 add_library(page_proc STATIC src/webpage/PageProcessor.cpp)
