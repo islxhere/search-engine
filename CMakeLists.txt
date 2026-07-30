@@ -29,5 +29,8 @@ add_library(page_proc STATIC src/webpage/PageProcessor.cpp)
 target_link_libraries(page_proc PRIVATE tinyxml2)
 target_include_directories(page_proc PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
+add_library(keyword_recommender STATIC src/recommend/KeywordRecommender.cpp)
+target_include_directories(keyword_recommender PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
 add_executable(build_offline_data src/build_offline_data.cpp)
 target_link_libraries(build_offline_data PRIVATE env_loader keyword_proc dir_scaner page_proc)

@@ -2,6 +2,11 @@
 #include "core/DirectoryScanner.h"
 #include "core/EnvLoader.h"
 
+#include <algorithm>
+#include <cctype>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 #include <utfcpp/utf8.h>
 
 KeywordProcessor::KeywordProcessor() {
