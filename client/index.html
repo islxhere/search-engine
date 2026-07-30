@@ -3,15 +3,15 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="寻迹：简洁、专注的网页搜索客户端">
+    <meta name="description" content="Buugle：简洁、专注的网页搜索客户端">
     <meta name="color-scheme" content="light dark">
     <link rel="icon" href="data:,">
-    <title>寻迹</title>
+    <title>Buugle</title>
     <script>
       (() => {
         let saved;
         try {
-          saved = localStorage.getItem("xunji-theme");
+          saved = localStorage.getItem("buugle-theme");
         } catch {}
         if (saved !== "light" && saved !== "dark") saved = null;
         const theme = saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
@@ -26,7 +26,7 @@
     <a class="skip-link" href="#main-content">跳到搜索结果</a>
 
     <header class="site-header">
-      <a class="brand" href="/" aria-label="寻迹首页">寻迹</a>
+      <a class="brand" href="/" aria-label="Buugle 首页">Buugle</a>
 
       <form class="search-form" role="search" autocomplete="off">
         <div class="search-box">
@@ -69,7 +69,7 @@
       <section class="welcome" aria-labelledby="welcome-title">
         <p class="eyebrow">SEARCH THE OPEN WEB</p>
         <h1 id="welcome-title">从一个词开始，找到值得阅读的页面。</h1>
-        <p>输入关键词，寻迹会为你提供联想并检索相关网页。</p>
+        <p>输入关键词，Buugle 会为你提供联想并检索相关网页。</p>
       </section>
 
       <section class="results-summary" aria-labelledby="results-heading" hidden>
@@ -113,6 +113,6 @@
       </svg>
     </template>
 
-    <noscript>请启用 JavaScript 后使用寻迹搜索。</noscript>
+    <noscript>请启用 JavaScript 后使用 Buugle 搜索。</noscript>
   </body>
 </html>

@@ -38,14 +38,14 @@ function setTheme(theme, persist = true) {
 
   if (persist) {
     try {
-      localStorage.setItem("xunji-theme", theme);
+      localStorage.setItem("buugle-theme", theme);
     } catch {}
   }
 }
 
 function storedTheme() {
   try {
-    const theme = localStorage.getItem("xunji-theme");
+    const theme = localStorage.getItem("buugle-theme");
     return theme === "light" || theme === "dark" ? theme : null;
   } catch {
     return null;
