@@ -24,19 +24,37 @@ static bool isAllChinese(const std::string &s) {
     return true;
 }
 
+// 把字符串拆成 UTF-8 字符列表
+// 因为编辑距离应该是比较字符与字符之间的距离，这里写一个函数
+// 把字符串拆成一个个字符,而不是比较字节
+static std::vector<std::string> splitChars(const std::string &s) {
+    std::vector<std::string> chars;
+    const char *curr = s.c_str();
+    const char *end = s.c_str() + s.size();
+    while (curr != end) {
+        auto start = curr;
+        utf8::next(curr, end);
+        chars.emplace_back(start, curr);
+    }
+    return chars;
+}
+
 // 状态压缩版编辑距离
 // 返回的是两个单词的最小距离
+// 字符级编辑距离
 static int editDistance(const std::string &a, const std::string &b) {
-    // 这里选择长度更小的做列，更省空间
-    const std::string &row = a.size() >= b.size() ? a : b;
-    const std::string &col = a.size() >= b.size() ? b : a;
+    auto ca = splitChars(a);
+    auto cb = splitChars(b);
+
+    const auto &row = ca.size() >= cb.size() ? ca : cb;
+    const auto &col = ca.size() >= cb.size() ? cb : ca;
     const int m = static_cast<int>(col.size());
     std::vector<int> f(m + 1, 0);
     for (int j = 0; j < m; ++j) {
         f[j + 1] = j + 1;
     }
 
-    for (const char x : row) {
+    for (const auto &x : row) {
         int pre = f[0];
         f[0]++;
         for (int j = 0; j < m; ++j) {
