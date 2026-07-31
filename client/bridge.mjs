@@ -8,6 +8,7 @@ const CLIENT_HOST = process.env.CLIENT_HOST || '127.0.0.1';
 const CLIENT_PORT = readPort('CLIENT_PORT', 4173);
 const SEARCH_SERVER_HOST = process.env.SEARCH_SERVER_HOST || '127.0.0.1';
 const SEARCH_SERVER_PORT = readPort('SEARCH_SERVER_PORT', 8888);
+const MOCK_DATA = process.env.MOCK_DATA === '1';
 const TIMEOUT_MS = 5_000;
 const MAX_RESPONSE_BYTES = 2 * 1024 * 1024;
 const CLIENT_DIR = path.dirname(fileURLToPath(import.meta.url));
@@ -192,6 +193,46 @@ function formatApiResponse(type, payload) {
   return { results: payload };
 }
 
+function mockPayload(type, query) {
+  if (type === 1) {
+    return [
+      `${query} 是什么`,
+      `${query} 最新进展`,
+      `${query} 应用案例`,
+      `${query} 开源项目`,
+      `${query} 入门指南`,
+    ];
+  }
+
+  const slug = encodeURIComponent(query);
+  return [
+    {
+      id: 1,
+      title: `${query}：从概念到实践的入门指南`,
+      link: `https://example.com/guides/${slug}`,
+      abstract: `用一篇文章了解${query}的核心概念、常见术语与开始探索的方法。`,
+    },
+    {
+      id: 2,
+      title: `如何用${query}解决真实问题`,
+      link: `https://example.com/stories/${slug}`,
+      abstract: `整理几个来自产品、研究与日常工作的案例，看看${query}能带来什么。`,
+    },
+    {
+      id: 3,
+      title: `${query}资源清单`,
+      link: `https://example.com/resources/${slug}`,
+      abstract: `适合继续阅读的工具、社区与公开资料，按上手难度做了简要分类。`,
+    },
+    {
+      id: 4,
+      title: `${query}的下一步：趋势与思考`,
+      link: `https://example.com/insights/${slug}`,
+      abstract: `从近期变化出发，梳理值得关注的方向，以及实践中需要留意的问题。`,
+    },
+  ];
+}
+
 async function handleApi(response, url, type) {
   const query = (url.searchParams.get('q') || '').trim();
   if (!query) {
@@ -204,7 +245,9 @@ async function handleApi(response, url, type) {
   }
 
   try {
-    const payload = await requestSearch(type, query, response);
+    const payload = MOCK_DATA
+      ? mockPayload(type, query)
+      : await requestSearch(type, query, response);
     sendJson(response, 200, formatApiResponse(type, payload), true);
   } catch (error) {
     if (response.destroyed) return;
@@ -270,5 +313,6 @@ const server = http.createServer((request, response) => {
 });
 
 server.listen(CLIENT_PORT, CLIENT_HOST, () => {
-  console.log(`搜索客户端已启动：http://${CLIENT_HOST}:${CLIENT_PORT}`);
+  const mode = MOCK_DATA ? '（演示数据模式）' : '';
+  console.log(`搜索客户端已启动：http://${CLIENT_HOST}:${CLIENT_PORT}${mode}`);
 });

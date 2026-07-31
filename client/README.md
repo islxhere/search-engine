@@ -7,7 +7,16 @@
 
 ## 启动
 
-在项目根目录运行：
+没有搜索服务时，在项目根目录运行：
+
+```bash
+MOCK_DATA=1 node client/bridge.mjs
+```
+
+打开 `http://127.0.0.1:4173` 后，输入 `人工智能`、`开源搜索` 或
+`机器学习` 查看联想词和搜索结果；任意非空关键词也能演示。
+
+连接真实搜索服务时，运行：
 
 ```bash
 node client/bridge.mjs
@@ -22,6 +31,7 @@ node client/bridge.mjs
 | `CLIENT_PORT` | `4173` | HTTP 监听端口 |
 | `SEARCH_SERVER_HOST` | `127.0.0.1` | 搜索服务 TCP 地址 |
 | `SEARCH_SERVER_PORT` | `8888` | 搜索服务 TCP 端口 |
+| `MOCK_DATA` | 未设置 | 设为 `1` 时使用内置演示数据 |
 
 ## HTTP 接口
 
