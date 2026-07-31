@@ -1,6 +1,7 @@
 #include "recommend/KeywordProcessor.h"
 #include "core/DirectoryScanner.h"
 #include "core/EnvLoader.h"
+#include "core/Utf8Utils.h"
 
 #include <utfcpp/utf8.h>
 
@@ -25,17 +26,6 @@ void KeywordProcessor::process(const std::string &raw, const std::string &output
     build_en_index(output + "/dict_en.dat", output + "/index_en.dat");
 }
 
-static bool is_chinese(const char32_t cp) { return cp >= 0x4E00 && cp <= 0x9FFF; }
-
-static bool is_all_chinese(std::string &word) {
-    // auto it = utf8::iterator<std::string::const_iterator>{word.begin(), word.begin(), word.end()};
-    // auto end = utf8::iterator<std::string::const_iterator>{word.end(), word.begin(), word.end()};
-    utf8::iterator it{word.begin(), word.begin(), word.end()};
-    utf8::iterator end{word.end(), word.begin(), word.end()};
-    for (; it != end; ++it) { if (!is_chinese(*it)) return false; }
-    return true;
-}
-
 void KeywordProcessor::build_cn_dict(const std::string &dir, const std::string &outfile) {
     auto files = DirectoryScanner::scan(dir);
     std::map<std::string, int> wordCount;
@@ -47,7 +37,7 @@ void KeywordProcessor::build_cn_dict(const std::string &dir, const std::string &
             std::vector<std::string> words;
             tokenizer_.Cut(line, words);
             for (auto &word: words) {
-                if (!is_all_chinese(word)) continue;
+                if (!utf8_utils::is_all_chinese(word)) continue;
                 if (chStopWords_.count(word)) continue;
                 wordCount[word]++;
             }
