@@ -1,11 +1,12 @@
 #include "webpage/PageProcessor.h"
+#include "webpage/TfIdf.h"
 #include "core/DirectoryScanner.h"
 #include "core/EnvLoader.h"
+#include "core/Utf8Utils.h"
 
 #include <iostream>
 #include <tinyxml2.h>
 #include <regex>
-#include <utfcpp/utf8.h>
 
 
 using std::regex;
@@ -195,17 +196,6 @@ void PageProcessor::build_webpage_offset(const std::string &pages_dir, const std
     std::cout << "[√] 网页偏移库生成" << std::endl;
 }
 
-static bool is_chinese(const char32_t cp) { return cp >= 0x4E00 && cp <= 0x9FFF; }
-
-static bool is_all_chinese(std::string &word) {
-    // auto it = utf8::iterator<std::string::const_iterator>{word.begin(), word.begin(), word.end()};
-    // auto end = utf8::iterator<std::string::const_iterator>{word.end(), word.begin(), word.end()};
-    utf8::iterator it{word.begin(), word.begin(), word.end()};
-    utf8::iterator end{word.end(), word.begin(), word.end()};
-    for (; it != end; ++it) { if (!is_chinese(*it)) return false; }
-    return true;
-}
-
 void PageProcessor::build_inverted_index(const std::string &index_dir) {
     // term_freq[i] = words_count[i].second / total_words[i] // 词频(TF): 词语在各文档中的频率
     std::vector<std::map<std::string, int> > words_count(docs_.size()); // 词语在各文档中出现的次数
@@ -217,7 +207,7 @@ void PageProcessor::build_inverted_index(const std::string &index_dir) {
         tokenizer_.Cut(docs_[i].content, words);
 
         for (auto &word: words) {
-            if (!is_all_chinese(word)) continue;
+            if (!utf8_utils::is_all_chinese(word)) continue;
             if (stop_words_.count(word)) continue;
             total_words[i]++;
             words_count[i][word]++;
@@ -232,16 +222,18 @@ void PageProcessor::build_inverted_index(const std::string &index_dir) {
         double w_sq_sum = 0;
         std::map<std::string, double> weights;
         for (auto &[word, freq]: words_count[i]) {
-            double tf = static_cast<double>(freq) / total_words[i];
-            double idf = std::log2(N / doc_freq[word] + 1);
-            weights[word] = tf * idf;
+            weights[word] = tfidf::weight(
+                freq, total_words[i],
+                N, doc_freq[word]
+            );
             w_sq_sum += weights[word] * weights[word];
         }
 
         // 权重归一化
         double norm = std::sqrt(w_sq_sum);
+        // 倒排索引和网页偏移库必须使用同一套文档 ID。
         for (auto &[word, wight]: weights)
-            inverted_index_[word][i] = wight / norm;
+            inverted_index_[word][docs_[i].id] = wight / norm;
     }
 
     std::ofstream ofs{index_dir};
