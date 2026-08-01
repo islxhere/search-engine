@@ -53,6 +53,7 @@ target_include_directories(web_search
 
 add_library(search_server_lib STATIC
         src/protocol/TLVCodec.cpp
+        src/server/SearchEngineBackend.cpp
         src/server/SearchEngineServer.cpp)
 target_include_directories(search_server_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(search_server_lib PUBLIC keyword_recommender web_search env_loader muduo_net muduo_base pthread)

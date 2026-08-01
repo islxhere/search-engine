@@ -4,12 +4,7 @@
 #include <muduo/net/InetAddress.h>
 
 #include "protocol/TLVCodec.h"
-#include "recommend/KeywordDictionary.h"
-#include "recommend/KeywordIndex.h"
-#include "recommend/KeywordRecommender.h"
-#include "webpage/DocLibrary.h"
-#include "webpage/InvertedIndex.h"
-#include "webpage/WebSearcher.h"
+#include "server/SearchEngineBackend.h"
 
 using namespace muduo::net;
 
@@ -30,12 +25,5 @@ private:
 
     TcpServer server_;
     TLVCodec tlv_codec_;
-    DocLibrary docs_;
-    InvertedIndex index_;
-    WebSearcher searcher_;
-    KeywordDictionary cn_dictionary_;
-    KeywordIndex cn_index_;
-    KeywordDictionary en_dictionary_;
-    KeywordIndex en_index_;
-    KeywordRecommender recommender_;
+    SearchEngineBackend backend_;
 };
