@@ -22,12 +22,12 @@ MOCK_DATA=1 node client/bridge.mjs
 node client/bridge.mjs
 ```
 
-默认网页地址为 `http://127.0.0.1:4173`，搜索服务地址为
+默认监听地址为 `0.0.0.0:4173`，可从局域网通过本机 IP 访问；搜索服务地址为
 `127.0.0.1:8888`。可用以下环境变量覆盖：
 
 | 环境变量 | 默认值 | 用途 |
 | --- | --- | --- |
-| `CLIENT_HOST` | `127.0.0.1` | HTTP 监听地址 |
+| `CLIENT_HOST` | `0.0.0.0` | HTTP 监听地址 |
 | `CLIENT_PORT` | `4173` | HTTP 监听端口 |
 | `SEARCH_SERVER_HOST` | `127.0.0.1` | 搜索服务 TCP 地址 |
 | `SEARCH_SERVER_PORT` | `8888` | 搜索服务 TCP 端口 |

@@ -4,7 +4,7 @@ import net from 'node:net';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const CLIENT_HOST = process.env.CLIENT_HOST || '127.0.0.1';
+const CLIENT_HOST = process.env.CLIENT_HOST || '0.0.0.0';
 const CLIENT_PORT = readPort('CLIENT_PORT', 4173);
 const SEARCH_SERVER_HOST = process.env.SEARCH_SERVER_HOST || '127.0.0.1';
 const SEARCH_SERVER_PORT = readPort('SEARCH_SERVER_PORT', 8888);

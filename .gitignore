@@ -4,6 +4,7 @@
 
 # CMake output configured at the project root
 /build_offline_data
+/search_server
 
 # Runtime generated files
 /data/generated/
