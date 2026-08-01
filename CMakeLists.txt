@@ -60,3 +60,6 @@ target_link_libraries(search_server_lib PUBLIC keyword_recommender web_search en
 
 add_executable(build_offline_data src/build_offline_data.cpp)
 target_link_libraries(build_offline_data PRIVATE env_loader keyword_proc dir_scaner page_proc)
+
+add_executable(search_server src/search_server.cpp)
+target_link_libraries(search_server PRIVATE search_server_lib)
