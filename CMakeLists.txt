@@ -30,6 +30,14 @@ target_include_directories(dir_scaner PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
 add_library(keyword_proc STATIC src/recommend/KeywordProcessor.cpp)
 target_include_directories(keyword_proc PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
+add_library(keyword_recommender STATIC
+        src/recommend/KeywordDictionary.cpp
+        src/recommend/KeywordIndex.cpp
+        src/recommend/KeywordRecommender.cpp)
+target_include_directories(keyword_recommender
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+        PRIVATE ${NLOHMANN_JSON_INCLUDE_DIR})
+
 add_library(page_proc STATIC src/webpage/PageProcessor.cpp)
 target_link_libraries(page_proc PRIVATE tinyxml2)
 target_include_directories(page_proc PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
