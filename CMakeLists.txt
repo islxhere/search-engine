@@ -51,5 +51,12 @@ target_include_directories(web_search
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
         PRIVATE ${NLOHMANN_JSON_INCLUDE_DIR})
 
+add_library(search_server_lib STATIC
+        src/protocol/TLVCodec.cpp
+        src/server/SearchEngineBackend.cpp
+        src/server/SearchEngineServer.cpp)
+target_include_directories(search_server_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(search_server_lib PUBLIC keyword_recommender web_search env_loader muduo_net muduo_base pthread)
+
 add_executable(build_offline_data src/build_offline_data.cpp)
 target_link_libraries(build_offline_data PRIVATE env_loader keyword_proc dir_scaner page_proc)
