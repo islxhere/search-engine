@@ -4,6 +4,9 @@
 #include <muduo/net/InetAddress.h>
 
 #include "protocol/TLVCodec.h"
+#include "recommend/KeywordDictionary.h"
+#include "recommend/KeywordIndex.h"
+#include "recommend/KeywordRecommender.h"
 #include "webpage/DocLibrary.h"
 #include "webpage/InvertedIndex.h"
 #include "webpage/WebSearcher.h"
@@ -21,6 +24,8 @@ private:
 
     void onEntireMessage(const TcpConnectionPtr &, const TLVCodec::Message &, Timestamp);
 
+    void recommendKeywords(const TcpConnectionPtr&, const TLVCodec::Message &);
+
     void searchWebpages(const TcpConnectionPtr&, const TLVCodec::Message &);
 
     TcpServer server_;
@@ -28,4 +33,9 @@ private:
     DocLibrary docs_;
     InvertedIndex index_;
     WebSearcher searcher_;
+    KeywordDictionary cn_dictionary_;
+    KeywordIndex cn_index_;
+    KeywordDictionary en_dictionary_;
+    KeywordIndex en_index_;
+    KeywordRecommender recommender_;
 };
